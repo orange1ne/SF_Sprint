@@ -51,3 +51,46 @@ def submitdata(request):
             "coord_id": pereval_added.coord_id,
             "user_id": pereval_added.user_id
         }))
+
+
+def pereval_id(request, pereval_id):
+    pereval = pereval_added.objects.get(id=pereval_id)
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(
+             {
+                "id": pereval.id,
+                "title": pereval.title,
+                "coord_id": pereval.coord_id,
+                "user_id": pereval.user_id
+             }))
+
+
+def pereval_edit(request, pereval_id):
+    json_params = json.loads(request.body)
+    pereval = pereval_added.objects.get(id=pereval_id)
+    if request.method == 'PATCH':
+        if pereval.status == 'new':
+            pereval.title = json_params.get('title', pereval.title)
+            pereval.coord_id = json_params.get('coord_id', pereval.coord_id)
+            pereval.user_id = json_params.get('user_id', pereval.user_id)
+            pereval.save()
+            return HttpResponse(json.dumps({
+                "id": pereval.id,
+                "title": pereval.title,
+                "coord_id": pereval.coord_id,
+                "user_id": pereval.user_id
+            }))
+
+
+def email(request, user_email):
+    user = users.objects.get(email=user_email)
+    perevals = pereval_added.objects.filter(user_id=user.id)
+    if request.method == 'GET':
+        for pereval in perevals:
+            return HttpResponse(json.dumps(
+                 {
+                    "id": pereval.id,
+                    "title": pereval.title,
+                    "coord_id": pereval.coord_id,
+                    "user_id": pereval.user_id
+                 }))

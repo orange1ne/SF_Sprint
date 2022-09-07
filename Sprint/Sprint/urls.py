@@ -29,5 +29,8 @@ router.register(r'users', views.UsersViewset)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('submitdata/', views.submitdata)
+    path('submitdata/', views.submitdata),
+    path('pereval/id/', views.pereval_id),
+    path('submitdata/id/', views.pereval_edit),
+    path('pereval/email/', views.email)
 ]
